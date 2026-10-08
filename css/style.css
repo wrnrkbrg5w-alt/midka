@@ -1,0 +1,242 @@
+/* Small shared adjustments; Bootstrap still handles the main layout. */
+img {
+    max-width: 100%;
+}
+
+.text-muted, .text-secondary {
+    color: #59636d !important;
+}
+
+.navbar-dark {
+    --bs-navbar-color: #cbd0d5;
+    --bs-navbar-hover-color: #ffffff;
+}
+
+/* Header */
+.navbar.bg-dark {
+    background: linear-gradient(90deg, #172b3a 0%, #233f52 100%) !important;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+}
+
+.navbar-brand::before {
+    content: "B";
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background-color: #0d6efd;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.navbar .nav-link {
+    margin-left: 0.2rem;
+    padding: 0.45rem 0.85rem !important;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.navbar .nav-link.active {
+    background-color: #0d6efd;
+    color: #ffffff;
+}
+
+:focus-visible {
+    outline: 3px solid #0a58ca;
+    outline-offset: 3px;
+}
+
+/* Keep the carousel indicators clear of the book titles. */
+.carousel-inner {
+    padding-bottom: 3rem !important;
+}
+
+/* Home page */
+.home-hero {
+    background: linear-gradient(135deg, #eef5ff 0%, #f8f9fa 100%);
+    border: 1px solid #dee7f2;
+}
+
+.home-label,
+.book-type {
+    display: inline-block;
+    color: #0d6efd;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.hero-panel {
+    border-left: 4px solid #198754 !important;
+}
+
+.popular-card {
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(33, 37, 41, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.popular-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(33, 37, 41, 0.12);
+}
+
+.popular-card .card-img-top {
+    height: 230px;
+}
+
+@media screen and (max-width: 575px) {
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+    .home-hero {
+        border-radius: 12px !important;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .navbar-nav {
+        gap: 0.25rem;
+        padding-top: 0.75rem;
+    }
+
+    .navbar .nav-link {
+        margin-left: 0;
+    }
+}
+
+/* typography */
+/* A light visual refinement for the existing catalog cards. */
+.catalog-book {
+    height: 100%;
+    border: 1px solid #e3e7ec;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(33, 37, 41, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.catalog-book:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(33, 37, 41, 0.1);
+}
+
+.catalog-book img {
+    width: 100px;
+    height: 140px;
+    object-fit: contain;
+    margin-bottom: 1.25rem;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px rgba(33, 37, 41, 0.12);
+}
+
+.catalog-book h3 {
+    color: #343a40;
+    line-height: 1.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .catalog-book,
+    .popular-card {
+        transition: none;
+    }
+}
+
+.mq-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+.mq-subtitle {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+.mq-body {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* tablet */
+@media screen and (min-width: 768px) {
+    .mq-title {
+        font-size: 2.3rem;
+    }
+    .mq-subtitle {
+        font-size: 1.4rem;
+    }
+    .mq-body {
+        font-size: 1.1rem;
+    }
+}
+
+/* desktop */
+@media screen and (min-width: 1024px) {
+    .mq-title {
+        font-size: 3rem;
+    }
+    .mq-subtitle {
+        font-size: 1.8rem;
+    }
+    .mq-body {
+        font-size: 1.25rem;
+    }
+}
+
+/* cards */
+.custom-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.custom-card-item {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+    flex: 1 1 100%;
+}
+
+.custom-card-item img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+
+/* tablet: 2 per row */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .custom-card-item {
+        flex: 0 0 calc(50% - 10px);
+    }
+}
+
+/* desktop: 3 per row */
+@media screen and (min-width: 1024px) {
+    .custom-card-item {
+        flex: 0 0 calc(33.333% - 14px);
+    }
+}
