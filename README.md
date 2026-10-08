@@ -26,5 +26,3 @@ Team **Hour**:
 
 - Khairgeldi Bekzat
 - Talapek Meyirzhan
-
-Astana IT University
