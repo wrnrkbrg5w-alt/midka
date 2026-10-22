@@ -1,6 +1,3 @@
-// Team member: Talapek Meyirzhan
-// Tasks 2 and 3: FAQ accordion and subscription popup.
-
 document.querySelectorAll('.faq-question').forEach(function (question) {
     question.addEventListener('click', function () {
         const answer = document.getElementById(question.getAttribute('aria-controls'));

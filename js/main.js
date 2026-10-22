@@ -1,6 +1,3 @@
-// Team member: Khairgeldi Bekzat
-// Tasks 4 and 5: background color changer and live date/time.
-
 const pageColors = [
     { color: '#f8f9fa', name: 'Light' },
     { color: '#eef5ff', name: 'Sky' },

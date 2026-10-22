@@ -1,6 +1,3 @@
-// Collaborative component: Khairgeldi Bekzat and Talapek Meyirzhan
-// Task 1: custom form validation with clear error messages.
-
 const contactForm = document.getElementById('contact-form');
 const formSuccess = document.getElementById('form-success');
 
