@@ -1,8 +1,10 @@
 document.querySelectorAll('.faq-question').forEach(function (question) {
+    let hideTimer;
     question.addEventListener('click', function () {
         const answer = document.getElementById(question.getAttribute('aria-controls'));
         const willOpen = question.getAttribute('aria-expanded') === 'false';
 
+        clearTimeout(hideTimer);
         question.setAttribute('aria-expanded', String(willOpen));
         answer.hidden = false;
 
@@ -10,10 +12,9 @@ document.querySelectorAll('.faq-question').forEach(function (question) {
             answer.style.maxHeight = answer.scrollHeight + 'px';
         } else {
             answer.style.maxHeight = '0px';
-            answer.addEventListener('transitionend', function hideAnswer() {
-                answer.hidden = true;
-                answer.removeEventListener('transitionend', hideAnswer);
-            });
+            hideTimer = setTimeout(function () {
+                if (question.getAttribute('aria-expanded') === 'false') answer.hidden = true;
+            }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 300);
         }
     });
 });
@@ -56,6 +57,16 @@ if (popup) {
 
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape' && popup && !popup.hidden) closePopup();
+    if (event.key === 'Tab' && popup && !popup.hidden) {
+        const controls = [...popup.querySelectorAll('button, input')];
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault(); first.focus();
+        }
+    }
 });
 
 if (subscribeForm) {
