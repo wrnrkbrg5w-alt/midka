@@ -25,6 +25,7 @@ const BookVerse = {
         }
     }
 };
+window.BookVerse = BookVerse;
 BookVerse.sound.volume = 0.35;
 BookVerse.soundEnabled = BookVerse.read('sound', true) === true;
 const themeToggle = document.querySelector('[data-theme-toggle]');
@@ -100,7 +101,8 @@ if (greetingForm) {
     greetingForm.addEventListener('submit', function (event) {
         event.preventDefault();
         const name = document.getElementById('reader-name').value.trim();
-        document.getElementById('reader-greeting').textContent = name ? 'Welcome, ' + name + '!' : 'Welcome, reader!';
-        document.getElementById('greeting-message').textContent = name ? 'Your next story is waiting in the catalog.' : 'Enter your name to personalize the greeting.';
+        const validName = /^[\p{L}]+(?:[ '\u2019-][\p{L}]+)*$/u.test(name) && name.length >= 2;
+        document.getElementById('reader-greeting').textContent = validName ? 'Welcome, ' + name + '!' : 'Welcome, reader!';
+        document.getElementById('greeting-message').textContent = validName ? 'Your next story is waiting in the catalog.' : 'Enter your name using letters and spaces to personalize the greeting.';
     });
 }

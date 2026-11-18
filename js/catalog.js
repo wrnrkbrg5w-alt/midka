@@ -10,6 +10,7 @@ const books = [
     { id: 8, title: 'The Little Prince', author: 'Antoine de Saint-Exupéry', category: 'fantasy', description: 'A young traveler explores friendship, responsibility and the things that matter most.' },
     { id: 9, title: 'Fahrenheit 451', author: 'Ray Bradbury', category: 'science-fiction', description: 'A fireman in a world that burns books begins to question the rules that shape his society.' }
 ];
+window.books = books;
 const storedSaved = BookVerse.read('saved', []);
 const storedRatings = BookVerse.read('ratings', {});
 const library = {
@@ -52,7 +53,7 @@ function createBookCard(book) {
     column.innerHTML = `
         <article class="catalog-book bg-white p-4" data-book-id="${book.id}">
             <div class="d-flex align-items-start gap-3">
-                <img src="img/book-${book.id}.svg" alt="${book.title} cover" loading="lazy">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="img/book-${book.id}.svg" alt="${book.title} cover" loading="lazy">
                 <div><span class="book-type">${categoryNames[book.category]}</span><h3 class="h5 fw-bold mt-2 mb-1">${book.title}</h3><p class="text-muted small mb-0">${book.author}</p></div>
             </div>
             <button type="button" class="btn btn-sm btn-link px-0" data-action="details" aria-expanded="false" aria-controls="description-${book.id}">Read more</button>
@@ -100,8 +101,9 @@ function renderBooks() {
     document.querySelector('#empty-catalog').hidden = visibleBooks.length > 0;
     document.querySelector('#reading-count').textContent = 'Reading list: ' + library.saved.size;
     document.querySelector('#category-description').textContent = describeCategory(categorySelect.value);
+    document.dispatchEvent(new CustomEvent('bookverse:catalog-rendered'));
 }
-bookSearch.addEventListener('input', renderBooks);
+window.renderBooks = renderBooks;
 categorySelect.addEventListener('change', renderBooks);
 savedFilter.addEventListener('click', function () {
     library.savedOnly = !library.savedOnly;
@@ -132,11 +134,13 @@ bookGrid.addEventListener('click', function (event) {
         case 'rate':
             library.setRating(id, Number(button.dataset.rating)); updateCard(card, id);
             document.querySelector('#catalog-feedback').textContent = `${book.title}: rated ${library.getRating(id)} out of 5.`;
+            if (window.BookVerseToast) window.BookVerseToast(`${book.title} rated ${library.getRating(id)} out of 5.`);
             break;
         case 'save': {
             library.toggleSaved(id); updateCard(card, id);
             const added = library.saved.has(id);
             document.querySelector('#catalog-feedback').textContent = book.title + (added ? ' added to your reading list.' : ' removed from your reading list.');
+            if (window.BookVerseToast) window.BookVerseToast(book.title + (added ? ' added to your reading list.' : ' removed from your reading list.'));
             if (added) {
                 card.classList.remove('just-saved');
                 void card.offsetWidth; // Restart the event-triggered pulse.

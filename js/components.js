@@ -72,10 +72,16 @@ document.addEventListener('keydown', function (event) {
 if (subscribeForm) {
     subscribeForm.addEventListener('submit', function (event) {
         event.preventDefault();
-        if (!subscribeForm.reportValidity()) return;
-
-        document.getElementById('subscribe-message').textContent =
-            'Thank you! The popup form works correctly. No data was sent.';
-        subscribeForm.reset();
+        const name = document.getElementById('subscriber-name').value.trim();
+        const email = document.getElementById('subscriber-email').value.trim();
+        const message = document.getElementById('subscribe-message');
+        if (!/^[\p{L}]+(?:[ '\u2019-][\p{L}]+)*$/u.test(name) || name.length < 2) {
+            message.textContent = 'Enter your name using letters and spaces.'; document.getElementById('subscriber-name').focus(); return;
+        }
+        if (!/^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i.test(email)) {
+            message.textContent = 'Enter a valid email such as name@example.com.'; document.getElementById('subscriber-email').focus(); return;
+        }
+        subscribeForm.dataset.validated = 'true';
+        message.textContent = 'Thanks! This demo does not send or store your details.';
     });
 }

@@ -4,10 +4,9 @@ const steps = [...document.querySelectorAll('[data-form-step]')];
 const stepNames = ['Your details', 'Reading preferences', 'Review your profile'];
 let currentStep = 0;
 const validationFields = {
-    userName: { errorId: 'name-error', validate: value => value.trim().length >= 2 ? '' : 'Enter a name with at least 2 characters.' },
-    userEmail: { errorId: 'email-error', validate: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) ? '' : 'Enter a valid email, for example name@example.com.' },
-    userPassword: { errorId: 'password-error', validate: value => value.length >= 8 && /[A-Za-z]/.test(value) && /\d/.test(value) ? '' : 'Use at least 8 characters, including a letter and a number.' },
-    confirmPassword: { errorId: 'confirm-error', validate: value => value && value === contactForm.elements.userPassword.value ? '' : 'Passwords must match.' },
+    userName: { errorId: 'name-error', validate: value => /^[\p{L}]+(?:[ '\u2019-][\p{L}]+)*$/u.test(value.trim()) && value.trim().length >= 2 ? '' : 'Enter your full name using letters, spaces, hyphens, or apostrophes.' },
+    userEmail: { errorId: 'email-error', validate: value => /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i.test(value.trim()) ? '' : 'Enter a valid email, for example name@example.com.' },
+    userPhone: { errorId: 'phone-error', validate: value => /^\+?[\d\s().-]{7,20}$/.test(value.trim()) && value.replace(/\D/g, '').length >= 7 && value.replace(/\D/g, '').length <= 15 ? '' : 'Enter a phone number with 7 to 15 digits.' },
     message: { errorId: 'message-error', validate: value => value.trim().length >= 10 ? '' : 'Write at least 10 characters.' }
 };
 function validateField(name) {
@@ -19,25 +18,18 @@ function validateField(name) {
     return !message;
 }
 function validateStep(index) {
-    const names = index === 0 ? ['userName', 'userEmail', 'userPassword', 'confirmPassword'] : index === 1 ? ['message'] : [];
+    const names = index === 0 ? ['userName', 'userEmail', 'userPhone'] : index === 1 ? ['message'] : [];
     const valid = names.map(validateField).every(Boolean);
     if (!valid) steps[index].querySelector('.is-invalid').focus();
     return valid;
 }
 function updateReview() {
     const review = document.getElementById('profile-review');
-    const fields = {
-        Name: contactForm.elements.userName.value.trim(),
-        Email: contactForm.elements.userEmail.value.trim(),
-        Category: contactForm.elements.category.selectedOptions[0].textContent,
-        Message: contactForm.elements.message.value.trim()
-    };
+    const fields = { Name: contactForm.elements.userName.value.trim(), Email: contactForm.elements.userEmail.value.trim(), Phone: contactForm.elements.userPhone.value.trim(), Category: contactForm.elements.category.selectedOptions[0].textContent, Message: contactForm.elements.message.value.trim() };
     review.replaceChildren();
-    Object.entries(fields).forEach(function ([label, value]) {
+    Object.entries(fields).forEach(([label, value]) => {
         const term = document.createElement('dt'); const detail = document.createElement('dd');
-        term.className = 'col-sm-3'; detail.className = 'col-sm-9';
-        term.textContent = label; detail.textContent = value;
-        review.append(term, detail);
+        term.className = 'col-sm-3'; detail.className = 'col-sm-9'; term.textContent = label; detail.textContent = value; review.append(term, detail);
     });
 }
 function showStep(index, moveFocus = true) {
@@ -46,54 +38,36 @@ function showStep(index, moveFocus = true) {
     document.getElementById('step-status').textContent = `Step ${index + 1} of 3 - ${stepNames[index]}`;
     document.getElementById('form-progress').style.width = `${(index + 1) / steps.length * 100}%`;
     document.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', String(index + 1));
-    document.getElementById('form-back').hidden = index === 0;
-    document.getElementById('form-next').hidden = index === steps.length - 1;
-    document.getElementById('form-submit').hidden = index !== steps.length - 1;
-    formSuccess.hidden = true;
-    if (index === 2) updateReview();
-    if (moveFocus) steps[index].querySelector('legend').focus();
+    document.getElementById('form-back').hidden = index === 0; document.getElementById('form-next').hidden = index === steps.length - 1; document.getElementById('form-submit').hidden = index !== steps.length - 1; formSuccess.hidden = true;
+    if (index === 2) updateReview(); if (moveFocus) steps[index].querySelector('legend').focus();
 }
-// Higher-order navigation receives the display function as a callback.
 function navigateStep(direction, onStepChanged) {
     if (direction > 0 && !validateStep(currentStep)) return;
-    const nextStep = Math.max(0, Math.min(steps.length - 1, currentStep + direction));
-    onStepChanged(nextStep);
+    onStepChanged(Math.max(0, Math.min(steps.length - 1, currentStep + direction)));
 }
 document.getElementById('form-next').addEventListener('click', () => navigateStep(1, showStep));
 document.getElementById('form-back').addEventListener('click', () => navigateStep(-1, showStep));
-Object.keys(validationFields).forEach(function (name) {
-    contactForm.elements[name].addEventListener('input', function () {
-        validateField(name);
-        if (name === 'userPassword' && contactForm.elements.confirmPassword.value) validateField('confirmPassword');
-        formSuccess.hidden = true;
-    });
-});
-contactForm.elements.termsCheck.addEventListener('change', function () {
-    document.getElementById('terms-error').textContent = '';
-    contactForm.elements.termsCheck.classList.remove('is-invalid');
-    contactForm.elements.termsCheck.removeAttribute('aria-invalid');
+Object.keys(validationFields).forEach(name => contactForm.elements[name].addEventListener('input', () => {
+    validateField(name);
     formSuccess.hidden = true;
+}));
+contactForm.elements.termsCheck.addEventListener('change', () => {
+    document.getElementById('terms-error').textContent = ''; contactForm.elements.termsCheck.classList.remove('is-invalid'); contactForm.elements.termsCheck.removeAttribute('aria-invalid'); formSuccess.hidden = true;
 });
-contactForm.addEventListener('submit', function (event) {
-    event.preventDefault();
+contactForm.addEventListener('submit', event => {
+    event.preventDefault(); contactForm.dataset.validated = 'false';
     if (currentStep < steps.length - 1) { navigateStep(1, showStep); return; }
-    for (let i = 0; i < 2; i++) {
-        showStep(i, false);
-        if (!validateStep(i)) return;
-    }
+    for (let i = 0; i < 2; i++) { showStep(i, false); if (!validateStep(i)) return; }
     showStep(2, false);
     const accepted = contactForm.elements.termsCheck.checked;
     document.getElementById('terms-error').textContent = accepted ? '' : 'Confirm that you understand this is a demo.';
-    contactForm.elements.termsCheck.classList.toggle('is-invalid', !accepted);
-    contactForm.elements.termsCheck.setAttribute('aria-invalid', String(!accepted));
+    contactForm.elements.termsCheck.classList.toggle('is-invalid', !accepted); contactForm.elements.termsCheck.setAttribute('aria-invalid', String(!accepted));
     if (!accepted) { contactForm.elements.termsCheck.focus(); return; }
-    formSuccess.hidden = false; formSuccess.focus(); BookVerse.playSound();
+    contactForm.dataset.validated = 'true'; formSuccess.hidden = false; formSuccess.textContent = 'Thanks! Your suggestion passed validation. This demo does not send or save your data.'; formSuccess.focus();
 });
-contactForm.addEventListener('reset', function () {
+contactForm.addEventListener('reset', () => {
     document.querySelectorAll('.field-error').forEach(error => { error.textContent = ''; });
-    contactForm.querySelectorAll('[aria-invalid]').forEach(function (field) {
-        field.classList.remove('is-invalid'); field.removeAttribute('aria-invalid');
-    });
+    contactForm.querySelectorAll('[aria-invalid]').forEach(field => { field.classList.remove('is-invalid'); field.removeAttribute('aria-invalid'); });
     document.getElementById('profile-review').replaceChildren(); showStep(0);
 });
 showStep(0, false);

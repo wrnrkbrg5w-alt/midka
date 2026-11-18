@@ -8,6 +8,8 @@
     <title>BookVerse - Contact</title>
     <link href="vendor/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="js/script.js"></script>
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
@@ -23,6 +25,8 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="catalog.html">Catalog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="discover.html">Discover</a></li>
+                        <li class="nav-item"><a class="nav-link" href="account.html">Reader Account</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="contact.html">Contact</a></li>
                     </ul>
@@ -50,7 +54,7 @@
             <div class="col-12 col-lg-8">
                 <section class="card shadow-sm border-0 p-4 p-md-5">
                     <h1 class="h3 fw-bold mb-3">Join BookVerse</h1>
-                    <p id="form-help" class="text-muted mb-4">Create your demo reader profile in three steps. Your entries stay in the form when you go back. No profile data is sent or saved.</p>
+                    <p id="form-help" class="text-muted mb-4">Send a book suggestion in three steps. This demo validates your details locally and does not send them anywhere.</p>
 
                     <p id="step-status" class="fw-semibold" role="status">Step 1 of 3 - Your details</p>
                     <div class="progress mb-4" role="progressbar" aria-label="Form progress" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1"><div id="form-progress" class="progress-bar"></div></div>
@@ -58,21 +62,20 @@
                         <fieldset data-form-step>
                             <legend class="h5" tabindex="-1">Your details</legend>
                             <div class="row g-3">
-                                <div class="col-12 col-md-6"><label for="userName" class="form-label">Your Name</label><input type="text" class="form-control" id="userName" name="userName" autocomplete="name" maxlength="100" aria-describedby="name-error" required><p id="name-error" class="field-error" aria-live="polite"></p></div>
-                                <div class="col-12 col-md-6"><label for="userEmail" class="form-label">Email Address</label><input type="email" class="form-control" id="userEmail" name="userEmail" autocomplete="email" aria-describedby="email-error" required><p id="email-error" class="field-error" aria-live="polite"></p></div>
-                                <div class="col-12 col-md-6"><label for="userPassword" class="form-label">Password</label><input type="password" class="form-control" id="userPassword" name="userPassword" autocomplete="new-password" aria-describedby="password-help password-error" required><p id="password-help" class="form-text">Use 8 or more characters, including a letter and a number.</p><p id="password-error" class="field-error" aria-live="polite"></p></div>
-                                <div class="col-12 col-md-6"><label for="confirmPassword" class="form-label">Confirm Password</label><input type="password" class="form-control" id="confirmPassword" name="confirmPassword" autocomplete="new-password" aria-describedby="confirm-error" required><p id="confirm-error" class="field-error" aria-live="polite"></p></div>
+                                <div class="col-12 col-md-6"><label for="userName" class="form-label">Full Name</label><input type="text" class="form-control" id="userName" name="userName" autocomplete="name" placeholder="e.g. Bekzat Khairgeldi" aria-describedby="name-error"><p id="name-error" class="field-error" aria-live="polite"></p></div>
+                                <div class="col-12 col-md-6"><label for="userEmail" class="form-label">Email Address</label><input type="text" inputmode="email" class="form-control" id="userEmail" name="userEmail" autocomplete="email" placeholder="name@example.com" aria-describedby="email-error"><p id="email-error" class="field-error" aria-live="polite"></p></div>
+                                <div class="col-12 col-md-6"><label for="userPhone" class="form-label">Phone Number</label><input type="text" inputmode="tel" class="form-control" id="userPhone" name="userPhone" autocomplete="tel" placeholder="+7 700 123 45 67" aria-describedby="phone-error"><p id="phone-error" class="field-error" aria-live="polite"></p></div>
                             </div>
                         </fieldset>
                         <fieldset data-form-step hidden>
                             <legend class="h5" tabindex="-1">Reading preferences</legend>
                             <label for="category" class="form-label">Favorite Category</label><select id="category" name="category" class="form-select mb-3"><option value="classics">Classics</option><option value="science-fiction">Science Fiction</option><option value="fantasy">Fantasy</option><option value="educational">Educational</option></select>
-                            <label for="message" class="form-label">Your book suggestion or question</label><textarea id="message" name="message" class="form-control" rows="4" maxlength="2000" aria-describedby="message-error" required></textarea><p id="message-error" class="field-error" aria-live="polite"></p>
+                            <label for="message" class="form-label">Your book suggestion or question</label><textarea id="message" name="message" class="form-control" rows="4" aria-describedby="message-error" placeholder="Tell us what you would like to read next"></textarea><p id="message-error" class="field-error" aria-live="polite"></p>
                         </fieldset>
                         <fieldset data-form-step hidden>
                             <legend class="h5" tabindex="-1">Review your profile</legend>
                             <dl id="profile-review" class="row my-3"></dl>
-                            <div class="form-check"><input id="termsCheck" name="termsCheck" class="form-check-input" type="checkbox" aria-describedby="terms-error" required><label for="termsCheck" class="form-check-label">I understand this is a sample form and no data will be sent.</label></div><p id="terms-error" class="field-error" aria-live="polite"></p>
+                            <div class="form-check"><input id="termsCheck" name="termsCheck" class="form-check-input" type="checkbox" aria-describedby="terms-error"><label for="termsCheck" class="form-check-label">I understand this is a sample form and no data will be sent.</label></div><p id="terms-error" class="field-error" aria-live="polite"></p>
                         </fieldset>
                         <div class="d-flex flex-wrap gap-2 mt-4">
                             <button id="form-back" class="btn btn-outline-primary" type="button" hidden>Back</button>

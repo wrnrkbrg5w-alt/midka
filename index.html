@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Khairgeldi Bekzat, Talapek Meyirzhan">
-    <meta name="description" content="BookVerse interactive library project for Assignment 5">
+    <meta name="description" content="BookVerse interactive library project with jQuery features for Assignment 6">
     <title>BookVerse - Home</title>
     <link href="vendor/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="js/script.js"></script>
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
@@ -23,6 +25,8 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="catalog.html">Catalog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="discover.html">Discover</a></li>
+                        <li class="nav-item"><a class="nav-link" href="account.html">Reader Account</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                     </ul>
@@ -60,12 +64,33 @@
         <section class="reader-welcome bg-white border rounded-3 p-4 mb-5" aria-labelledby="reader-greeting">
             <h2 id="reader-greeting" class="h4">Welcome, reader!</h2>
             <p class="text-muted">Give your next reading session a personal touch.</p>
-            <form id="greeting-form" class="d-flex flex-wrap gap-2">
-                <label for="reader-name" class="visually-hidden">Your name</label><input id="reader-name" class="form-control reader-name" type="text" placeholder="Your first name" maxlength="40" required>
+            <form id="greeting-form" class="d-flex flex-wrap gap-2" novalidate>
+                <label for="reader-name" class="visually-hidden">Your name</label><input id="reader-name" class="form-control reader-name" type="text" placeholder="e.g. Khairgeldi Bekzat" aria-describedby="greeting-message">
                 <button class="btn btn-primary" type="submit">Update greeting</button>
             </form>
             <p id="greeting-message" class="small mt-2 mb-0" role="status"></p>
         </section>
+        <section class="project-stats row g-3 mb-5" aria-label="BookVerse project statistics">
+            <div class="col-12 col-md-4">
+                <article class="stat-card h-100">
+                    <strong class="stat-number" data-counter="9">0</strong>
+                    <span>Books in the catalog</span>
+                </article>
+            </div>
+            <div class="col-12 col-md-4">
+                <article class="stat-card h-100">
+                    <strong class="stat-number" data-counter="6">0</strong>
+                    <span>Website pages</span>
+                </article>
+            </div>
+            <div class="col-12 col-md-4">
+                <article class="stat-card h-100">
+                    <strong class="stat-number" data-counter="2">0</strong>
+                    <span>Team members</span>
+                </article>
+            </div>
+        </section>
+
         <section>
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="h3 fw-bold m-0">Popular Books</h2>
@@ -75,7 +100,7 @@
             <div class="row g-4">
                 <div class="col-12 col-md-6 col-lg-4">
                     <article class="popular-card card h-100 border-0">
-                        <img src="img/book-1.svg" class="card-img-top p-3 bg-light" alt="The Great Gatsby cover" >
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="img/book-1.svg" class="card-img-top p-3 bg-light" alt="The Great Gatsby cover" >
                         <div class="card-body d-flex flex-column">
                             <span class="book-type">Classic</span>
                             <h3 class="card-title h5 fw-bold mt-2">The Great Gatsby</h3>
@@ -87,7 +112,7 @@
 
                 <div class="col-12 col-md-6 col-lg-4">
                     <article class="popular-card card h-100 border-0">
-                        <img src="img/book-2.svg" class="card-img-top p-3 bg-light" alt="Dune cover" >
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="img/book-2.svg" class="card-img-top p-3 bg-light" alt="Dune cover" >
                         <div class="card-body d-flex flex-column">
                             <span class="book-type">Science Fiction</span>
                             <h3 class="card-title h5 fw-bold mt-2">Dune</h3>
@@ -99,7 +124,7 @@
 
                 <div class="col-12 col-md-6 col-lg-4">
                     <article class="popular-card card h-100 border-0">
-                        <img src="img/book-3.svg" class="card-img-top p-3 bg-light" alt="1984 cover" >
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="img/book-3.svg" class="card-img-top p-3 bg-light" alt="1984 cover" >
                         <div class="card-body d-flex flex-column">
                             <span class="book-type">Dystopian Fiction</span>
                             <h3 class="card-title h5 fw-bold mt-2">1984</h3>
@@ -118,11 +143,11 @@
             <span class="home-label">BookVerse Updates</span>
             <h2 id="popup-title" class="h3 fw-bold mt-2">Join our reading list</h2>
             <p class="text-muted">Receive occasional recommendations from our student book collection.</p>
-            <form id="subscribe-form">
+            <form id="subscribe-form" novalidate>
                 <label for="subscriber-name" class="form-label fw-semibold">Your name</label>
-                <input id="subscriber-name" class="form-control mb-3" type="text" autocomplete="name" required>
+                <input id="subscriber-name" class="form-control mb-3" type="text" autocomplete="name" placeholder="e.g. Khairgeldi Bekzat" aria-describedby="subscribe-message">
                 <label for="subscriber-email" class="form-label fw-semibold">Email address</label>
-                <input id="subscriber-email" class="form-control mb-3" type="email" autocomplete="email" required>
+                <input id="subscriber-email" class="form-control mb-3" type="text" inputmode="email" autocomplete="email" placeholder="name@example.com" aria-describedby="subscribe-message">
                 <button class="btn btn-primary w-100" type="submit">Subscribe</button>
                 <p id="subscribe-message" class="small mt-3 mb-0" role="status"></p>
             </form>
